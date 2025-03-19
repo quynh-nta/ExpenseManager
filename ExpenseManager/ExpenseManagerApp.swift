@@ -13,8 +13,11 @@ struct ExpenseManagerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+//            ContentView()
+//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            MonthListView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                
         }
     }
 }

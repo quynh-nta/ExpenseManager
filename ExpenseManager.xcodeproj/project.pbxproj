@@ -11,11 +11,17 @@
 		BF3766842D700460005DA41A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3766832D700460005DA41A /* ContentView.swift */; };
 		BF3766862D700461005DA41A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF3766852D700461005DA41A /* Assets.xcassets */; };
 		BF3766892D700461005DA41A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF3766882D700461005DA41A /* Preview Assets.xcassets */; };
-		BF37668B2D700461005DA41A /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF37668A2D700461005DA41A /* Persistence.swift */; };
-		BF37668E2D700461005DA41A /* ExpenseManager.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF37668C2D700461005DA41A /* ExpenseManager.xcdatamodeld */; };
+		BF37668B2D700461005DA41A /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF37668A2D700461005DA41A /* PersistenceController.swift */; };
+		BF37668E2D700461005DA41A /* ExpenseModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF37668C2D700461005DA41A /* ExpenseModel.xcdatamodeld */; };
 		BF3766982D700461005DA41A /* ExpenseManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3766972D700461005DA41A /* ExpenseManagerTests.swift */; };
 		BF3766A22D700461005DA41A /* ExpenseManagerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3766A12D700461005DA41A /* ExpenseManagerUITests.swift */; };
 		BF3766A42D700461005DA41A /* ExpenseManagerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3766A32D700461005DA41A /* ExpenseManagerUITestsLaunchTests.swift */; };
+		BF3766B52D700E9C005DA41A /* ExpenseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3766B42D700E9C005DA41A /* ExpenseListView.swift */; };
+		BF3766B72D7014A4005DA41A /* AddExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3766B62D7014A4005DA41A /* AddExpenseView.swift */; };
+		BF3766B92D7048FB005DA41A /* GroupedExpense.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3766B82D7048FB005DA41A /* GroupedExpense.swift */; };
+		BF3766BB2D705E95005DA41A /* MonthListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3766BA2D705E95005DA41A /* MonthListView.swift */; };
+		BF3766BE2D70734B005DA41A /* CommonFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3766BD2D70734B005DA41A /* CommonFunc.swift */; };
+		BF3766C12D7077CE005DA41A /* ExpenseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3766C02D7077CE005DA41A /* ExpenseViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,13 +47,19 @@
 		BF3766832D700460005DA41A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BF3766852D700461005DA41A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF3766882D700461005DA41A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		BF37668A2D700461005DA41A /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		BF37668A2D700461005DA41A /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		BF37668D2D700461005DA41A /* ExpenseManager.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ExpenseManager.xcdatamodel; sourceTree = "<group>"; };
 		BF3766932D700461005DA41A /* ExpenseManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExpenseManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF3766972D700461005DA41A /* ExpenseManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseManagerTests.swift; sourceTree = "<group>"; };
 		BF37669D2D700461005DA41A /* ExpenseManagerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExpenseManagerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF3766A12D700461005DA41A /* ExpenseManagerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseManagerUITests.swift; sourceTree = "<group>"; };
 		BF3766A32D700461005DA41A /* ExpenseManagerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseManagerUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		BF3766B42D700E9C005DA41A /* ExpenseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseListView.swift; sourceTree = "<group>"; };
+		BF3766B62D7014A4005DA41A /* AddExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseView.swift; sourceTree = "<group>"; };
+		BF3766B82D7048FB005DA41A /* GroupedExpense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedExpense.swift; sourceTree = "<group>"; };
+		BF3766BA2D705E95005DA41A /* MonthListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthListView.swift; sourceTree = "<group>"; };
+		BF3766BD2D70734B005DA41A /* CommonFunc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonFunc.swift; sourceTree = "<group>"; };
+		BF3766C02D7077CE005DA41A /* ExpenseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,11 +110,14 @@
 		BF3766802D700460005DA41A /* ExpenseManager */ = {
 			isa = PBXGroup;
 			children = (
+				BF3766BF2D707780005DA41A /* ViewModels */,
+				BF3766BC2D707322005DA41A /* Utilities */,
+				BF3766B32D7007D4005DA41A /* Supporting Files */,
+				BF3766B22D7007BF005DA41A /* Views */,
+				BF3766B12D7007B2005DA41A /* Models */,
+				BF3766B02D7007A0005DA41A /* Persistence */,
 				BF3766812D700460005DA41A /* ExpenseManagerApp.swift */,
 				BF3766832D700460005DA41A /* ContentView.swift */,
-				BF3766852D700461005DA41A /* Assets.xcassets */,
-				BF37668A2D700461005DA41A /* Persistence.swift */,
-				BF37668C2D700461005DA41A /* ExpenseManager.xcdatamodeld */,
 				BF3766872D700461005DA41A /* Preview Content */,
 			);
 			path = ExpenseManager;
@@ -131,6 +146,57 @@
 				BF3766A32D700461005DA41A /* ExpenseManagerUITestsLaunchTests.swift */,
 			);
 			path = ExpenseManagerUITests;
+			sourceTree = "<group>";
+		};
+		BF3766B02D7007A0005DA41A /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				BF37668A2D700461005DA41A /* PersistenceController.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		BF3766B12D7007B2005DA41A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BF37668C2D700461005DA41A /* ExpenseModel.xcdatamodeld */,
+				BF3766B82D7048FB005DA41A /* GroupedExpense.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BF3766B22D7007BF005DA41A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BF3766B42D700E9C005DA41A /* ExpenseListView.swift */,
+				BF3766B62D7014A4005DA41A /* AddExpenseView.swift */,
+				BF3766BA2D705E95005DA41A /* MonthListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BF3766B32D7007D4005DA41A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BF3766852D700461005DA41A /* Assets.xcassets */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BF3766BC2D707322005DA41A /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				BF3766BD2D70734B005DA41A /* CommonFunc.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		BF3766BF2D707780005DA41A /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				BF3766C02D7077CE005DA41A /* ExpenseViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,9 +329,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF37668B2D700461005DA41A /* Persistence.swift in Sources */,
+				BF37668B2D700461005DA41A /* PersistenceController.swift in Sources */,
+				BF3766BE2D70734B005DA41A /* CommonFunc.swift in Sources */,
 				BF3766842D700460005DA41A /* ContentView.swift in Sources */,
-				BF37668E2D700461005DA41A /* ExpenseManager.xcdatamodeld in Sources */,
+				BF3766C12D7077CE005DA41A /* ExpenseViewModel.swift in Sources */,
+				BF3766B92D7048FB005DA41A /* GroupedExpense.swift in Sources */,
+				BF3766BB2D705E95005DA41A /* MonthListView.swift in Sources */,
+				BF3766B52D700E9C005DA41A /* ExpenseListView.swift in Sources */,
+				BF3766B72D7014A4005DA41A /* AddExpenseView.swift in Sources */,
+				BF37668E2D700461005DA41A /* ExpenseModel.xcdatamodeld in Sources */,
 				BF3766822D700460005DA41A /* ExpenseManagerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -425,6 +497,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ExpenseManager/Preview Content\"";
+				DEVELOPMENT_TEAM = 2A6QB5NFLZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -432,6 +505,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -453,6 +527,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ExpenseManager/Preview Content\"";
+				DEVELOPMENT_TEAM = 2A6QB5NFLZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -460,6 +535,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -587,13 +663,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		BF37668C2D700461005DA41A /* ExpenseManager.xcdatamodeld */ = {
+		BF37668C2D700461005DA41A /* ExpenseModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				BF37668D2D700461005DA41A /* ExpenseManager.xcdatamodel */,
 			);
 			currentVersion = BF37668D2D700461005DA41A /* ExpenseManager.xcdatamodel */;
-			path = ExpenseManager.xcdatamodeld;
+			path = ExpenseModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
