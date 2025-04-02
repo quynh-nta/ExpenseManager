@@ -15,7 +15,7 @@ class ExpenseViewModel: ObservableObject {
         }
     }
     @Published var expenses: [Expense] = []
-    @Published var sumOfMonth : [String : Double] = [:]
+    @Published var sumOfMonths : [String : Double] = [:]
     @Published var isLoading: Bool = true  // Tracks loading state
     
     private let viewContext: NSManagedObjectContext
@@ -66,6 +66,7 @@ class ExpenseViewModel: ObservableObject {
         }
         
         saveContext(expense: saveExpense!)
+        fetchExpenses()
     }
     
     func deleteExpense(expense: Expense){
@@ -76,13 +77,13 @@ class ExpenseViewModel: ObservableObject {
     private func saveContext(expense: Expense){
         do {
             try viewContext.save()
-            updateGroupedDictionary(for: expense.date ?? Date())
+            updateGroupedDictionary(for: yearMonthString(from: expense.date ?? Date()))
         } catch {
             print("error: \(error.localizedDescription)")
         }
     }
     
-    func updateGroupedDictionary(for month: Date?) {
+    func updateGroupedDictionary(for month: String?) {
         DispatchQueue.main.async {
             let filteredExpenses: [Expense]
             
@@ -90,7 +91,7 @@ class ExpenseViewModel: ObservableObject {
                 // Filter expenses by the selected month
                 filteredExpenses = self.expenses.filter { expense in
                     guard let expenseDate = expense.date else { return false }
-                    return yearMonthString(from: expenseDate) == yearMonthString(from: selectedMonth)
+                    return yearMonthString(from: expenseDate) == selectedMonth
                 }
             } else {
                 // Use all expenses if no specific month is selected
@@ -101,19 +102,20 @@ class ExpenseViewModel: ObservableObject {
             self.groupedDictionary = Dictionary(grouping: filteredExpenses, by: { Calendar.current.startOfDay(for: $0.date ?? Date()) })
 
             // Calculate sum for each month
-            self.sumOfMonth = self.groupedDictionary.reduce(into: [:]) { result, entry in
-                result[yearMonthString(from: entry.key)] = self.totalAmount(month: entry.key)
-            }
+             self.sumOfMonths = self.groupedDictionary.reduce(into: [:]) { result, entry in
+                 let strKey = yearMonthString(from: entry.key)
+                 result[strKey] = self.totalAmount(month: strKey)
+             }
 
             self.isLoading = false  // ✅ Data is ready
         }
     }
 
     
-    func totalAmount(month: Date) -> Double {
+    func totalAmount(month: String) -> Double {
         let filterByMonth = self.expenses.filter { expense in
             guard let date = expense.date else{return false}
-            return yearMonthString(from: date) == yearMonthString(from: month)
+            return yearMonthString(from: date) == month
         }
         
         return filterByMonth.reduce(0){$0 + $1.amount}
@@ -124,11 +126,10 @@ class ExpenseViewModel: ObservableObject {
     }
     
     private func calculateSumOfMonth() {
-        sumOfMonth = [:]
         for (date, expenses) in groupedDictionary {
             let key = yearMonthString(from: date)
             let value = expenses.reduce(0) { $0 + $1.amount }
-            sumOfMonth[key] = value
+            sumOfMonths[key] = value
         }
     }
 }

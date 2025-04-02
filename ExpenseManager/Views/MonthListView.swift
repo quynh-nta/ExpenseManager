@@ -23,20 +23,17 @@ struct MonthListView: View {
         NavigationView{
             List{
                 if viewModel.isLoading {
-                                    Text("Loading...").foregroundColor(.gray)  // Show loading state
+                    Text("Loading...").foregroundColor(.gray)  // Show loading state
                 } else {
-                    ForEach(items) { item in
-                        if let timestamp = item.timestamp{
-                            NavigationLink {
-                                //note: ✅ Truyền xuống Child
-                                ExpenseListView(viewModel: viewModel, month: timestamp) //! giả định rằng nó không phải nil.
-                            } label: {
-                                Text(yearMonthString(from: timestamp))
-                                Spacer()
-                                Text("\(viewModel.sumOfMonth[yearMonthString(from: timestamp)] ?? 0, specifier: "%.0f")")
-                                    .font(.headline)
-                                    .foregroundColor(Color.green)
-                            }
+                    ForEach(Array(viewModel.sumOfMonths).sorted(by: { $0.key > $1.key }), id: \.key) { key, value in
+                        NavigationLink {
+                            ExpenseListView(viewModel: viewModel, month: key ?? yearMonthString(from: Date())) //! giả định rằng nó không phải nil.
+                        } label: {
+                            Text(key)
+                            Spacer()
+                            Text("\(value, specifier: "%.0f")")
+                                .font(.headline)
+                                .foregroundColor(Color.green)
                         }
                     }
                     .onDelete(perform: deleteItems)
@@ -52,9 +49,10 @@ struct MonthListView: View {
             }
             .sheet(isPresented: $showingAddExpense) {
                 AddExpenseView(expenseFocused: .constant(nil as Expense?))
+                    .environmentObject(viewModel)
             }
         }.onAppear(){
-            viewModel.updateGroupedDictionary(for: (nil as Date?))
+            viewModel.updateGroupedDictionary(for: (nil as String?))
         }
     }
     

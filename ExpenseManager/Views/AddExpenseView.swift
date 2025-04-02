@@ -17,7 +17,7 @@ struct AddExpenseView: View {
     @State private var amount: String = ""
     @State private var date: Date = Date()
     
-    @StateObject var viewModel = ExpenseViewModel()
+    @EnvironmentObject var viewModel: ExpenseViewModel
     
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],

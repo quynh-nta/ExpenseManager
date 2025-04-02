@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ExpenseListView: View {
     @ObservedObject var viewModel = ExpenseViewModel()
-    var month: Date
+    var month: String //"MM/yyyy"
     
     @State private var showingAddExpense = false
     @State private var showingChart = false
@@ -53,7 +53,7 @@ struct ExpenseListView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .principal) {
-                        Text("Chi tiêu tháng \(yearMonthString(from: month))")
+                        Text("Chi tiêu tháng \(month)")
                             .font(.system(size: 28, weight: .bold, design: .rounded))
                             .foregroundStyle(
                                 LinearGradient(gradient: Gradient(colors: [.blue, .purple]), startPoint: .leading, endPoint: .trailing)
@@ -91,11 +91,13 @@ struct ExpenseListView: View {
                 
             }
             .sheet(isPresented: $showingAddExpense, onDismiss:{
-                viewModel.fetchExpenses()
-                viewModel.updateGroupedDictionary(for: month)
+                //viewModel.updateGroupedDictionary(for: month)
             }) {
                 AddExpenseView(expenseFocused: $expenseFocused)
                     .environmentObject(viewModel)
+            }
+            .onDisappear {
+                viewModel.updateGroupedDictionary(for: nil)
             }
             
             VStack {
@@ -123,6 +125,6 @@ private let itemFormatter: DateFormatter = {
 
 struct ExpenseListView_Previews: PreviewProvider {
     static var previews: some View {
-        ExpenseListView(month: Date())
+        ExpenseListView(month: "03/2025")
     }
 }
