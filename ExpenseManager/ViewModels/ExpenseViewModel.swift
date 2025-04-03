@@ -15,7 +15,24 @@ class ExpenseViewModel: ObservableObject {
         }
     }
     @Published var expenses: [Expense] = []
-    @Published var sumOfMonths : [String : Double] = [:]
+    @Published var sumOfMonths: [String: Double] = [:] {
+        didSet {
+            var newSumOfYears: [String: Double] = [:]
+            for (monthKey, amount) in sumOfMonths {
+                // Giả sử định dạng key là "MM/YYYY"
+                let components: [String.SubSequence] = monthKey.split(separator: "/")
+                if components.count == 2, let year = components.last {
+                    newSumOfYears[String(year), default: 0.0] += amount
+                    print("Year: \(year), Amount: \(amount)")
+                }
+            }
+            sumOfYears = newSumOfYears
+        }
+    }
+    
+    @Published var sumOfYears: [String: Double] = [:]
+    
+    
     @Published var isLoading: Bool = true  // Tracks loading state
     
     private let viewContext: NSManagedObjectContext
@@ -42,7 +59,7 @@ class ExpenseViewModel: ObservableObject {
             //update
             if let expense = expenses.count > 0 ? expenses.first(where: { $0.id == id }) : nil {
                 saveExpense = expense
-                saveExpense?.amount = Double(amount) ?? 0
+                saveExpense?.amount = Double(amount)
                 saveExpense?.date = date
                 saveExpense?.descriptions = descriptions
             }
@@ -50,7 +67,7 @@ class ExpenseViewModel: ObservableObject {
         else {
             saveExpense = Expense(context: viewContext)
             saveExpense?.id = UUID()
-            saveExpense?.amount = Double(amount) ?? 0
+            saveExpense?.amount = Double(amount)
             saveExpense?.date = date
             saveExpense?.descriptions = descriptions
             
@@ -97,20 +114,24 @@ class ExpenseViewModel: ObservableObject {
                 // Use all expenses if no specific month is selected
                 filteredExpenses = self.expenses
             }
-
+            
             // Group expenses by day
             self.groupedDictionary = Dictionary(grouping: filteredExpenses, by: { Calendar.current.startOfDay(for: $0.date ?? Date()) })
-
+            
             // Calculate sum for each month
-             self.sumOfMonths = self.groupedDictionary.reduce(into: [:]) { result, entry in
-                 let strKey = yearMonthString(from: entry.key)
-                 result[strKey] = self.totalAmount(month: strKey)
-             }
-
+            if (month != nil) {
+                self.sumOfMonths[month!] = self.totalAmount(month: month!)
+            }else{
+                self.sumOfMonths = self.groupedDictionary.reduce(into: [:]) { result, entry in
+                    let strKey = yearMonthString(from: entry.key)
+                    result[strKey] = self.totalAmount(month: strKey)
+                }
+            }
+            
             self.isLoading = false  // ✅ Data is ready
         }
     }
-
+    
     
     func totalAmount(month: String) -> Double {
         let filterByMonth = self.expenses.filter { expense in
@@ -118,11 +139,11 @@ class ExpenseViewModel: ObservableObject {
             return yearMonthString(from: date) == month
         }
         
+        // .reduce(0): Bắt đầu từ giá trị khởi tạo 0.
+        // Duyệt qua từng Expense trong filteredExpenses:
+        // $0: Tổng tiền hiện tại (ban đầu là 0).
+        // $1.amount: Số tiền của Expense hiện tại.
         return filterByMonth.reduce(0){$0 + $1.amount}
-//            .reduce(0): Bắt đầu từ giá trị khởi tạo 0.
-//            Duyệt qua từng Expense trong filteredExpenses:
-//            $0: Tổng tiền hiện tại (ban đầu là 0).
-//            $1.amount: Số tiền của Expense hiện tại.
     }
     
     private func calculateSumOfMonth() {

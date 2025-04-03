@@ -15,7 +15,7 @@ struct AddExpenseView: View {
     
     @State private var descriptions: String = ""
     @State private var amount: String = ""
-    @State private var date: Date = Date()
+    @State var date: Date = Date()
     
     @EnvironmentObject var viewModel: ExpenseViewModel
     
@@ -33,6 +33,51 @@ struct AddExpenseView: View {
                     TextField("Description", text: $descriptions)
                     TextField("Amount", text: $amount).keyboardType(.decimalPad)
                 }
+                
+                VStack(spacing: 8) {
+                    Text("Chọn nhanh")
+                        .font(.headline)
+                        .bold()
+                    
+                    HStack(spacing: 8) {
+                        Button(action: {
+                            amount += "000"
+                        }) {
+                            Text(".000")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(
+                                    LinearGradient(gradient: Gradient(colors: [.blue, .purple]),
+                                                   startPoint: .leading,
+                                                   endPoint: .trailing)
+                                )
+                                .cornerRadius(12)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .contentShape(Rectangle()) // Giới hạn vùng nhận sự kiện
+                        
+                        Button(action: {
+                            amount += "000000"
+                        }) {
+                            Text(".000.000")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(
+                                    LinearGradient(gradient: Gradient(colors: [.blue, .purple]),
+                                                   startPoint: .leading,
+                                                   endPoint: .trailing)
+                                )
+                                .cornerRadius(12)
+                        }
+                        .contentShape(Rectangle()) // Giới hạn vùng nhận sự kiện
+                    }
+                    .padding(.horizontal) // Áp dụng padding bên ngoài HStack để tránh trùng lặp
+                    .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 5)
+                }
             }
             .navigationTitle("Thêm chi tiêu")
             .toolbar{
@@ -45,10 +90,10 @@ struct AddExpenseView: View {
                 ToolbarItem{
                     Button("Save"){
                         viewModel.saveExpense(id: expenseFocused?.id,
-                                             amount: Double("\(amount)") ?? 0,
-                                             date: date,
-                                             descriptions: descriptions,
-                                             items: Array(items))
+                                              amount: Double("\(amount)") ?? 0,
+                                              date: date,
+                                              descriptions: descriptions,
+                                              items: Array(items))
                         presentationMode.wrappedValue.dismiss()
                     }
                 }

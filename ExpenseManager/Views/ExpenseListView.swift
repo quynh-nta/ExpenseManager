@@ -39,11 +39,11 @@ struct ExpenseListView: View {
                                 guard let expenses = viewModel.groupedDictionary[date],
                                       let firstIndex = indexSet.first,
                                       expenses.indices.contains(firstIndex) else { return }
-
+                                
                                 expenseFocused = expenses[firstIndex]
                                 showDeleteConfirmation = true
                             }
-
+                            
                             Text("Tổng: \((viewModel.groupedDictionary[date] ?? []).reduce(0) { $0 + $1.amount }, specifier: "%.0f VNĐ")")
                                 .foregroundColor(.green)
                                 .padding(.top)
@@ -61,7 +61,9 @@ struct ExpenseListView: View {
                     }
                     ToolbarItem{
                         Button(action: {
-                            expenseFocused = nil
+                            if expenseFocused != nil {
+                                expenseFocused = nil
+                            }
                             showingAddExpense.toggle()
                         }) {
                             Image(systemName: "plus")
@@ -88,12 +90,9 @@ struct ExpenseListView: View {
             }
             .onAppear {
                 viewModel.updateGroupedDictionary(for: month)
-                
             }
-            .sheet(isPresented: $showingAddExpense, onDismiss:{
-                //viewModel.updateGroupedDictionary(for: month)
-            }) {
-                AddExpenseView(expenseFocused: $expenseFocused)
+            .sheet(isPresented: $showingAddExpense) {
+                AddExpenseView(expenseFocused: $expenseFocused,date: dateFromString(month) ?? Date())
                     .environmentObject(viewModel)
             }
             .onDisappear {

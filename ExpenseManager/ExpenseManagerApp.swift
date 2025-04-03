@@ -10,14 +10,11 @@ import SwiftUI
 @main
 struct ExpenseManagerApp: App {
     let persistenceController = PersistenceController.shared
-
+    
     var body: some Scene {
         WindowGroup {
-//            ContentView()
-//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
             MonthListView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                
         }
     }
 }

@@ -9,66 +9,145 @@ import SwiftUI
 
 struct MonthListView: View {
     @Environment(\.managedObjectContext) private var viewContext
-
+    
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
         animation: .default)
     private var items: FetchedResults<Item>
     
-    @State var showingAddExpense: Bool = false
-    
+    @State private var showingAddExpense: Bool = false
     @StateObject var viewModel = ExpenseViewModel()
     
+    // Sử dụng state riêng cho nhóm danh sách tháng và cho nhóm tùy chọn
+    @State private var expandedYears: Set<String> = {
+        let currentYear = Calendar.current.component(.year, from: Date())
+        return [String(currentYear)]
+    }()
+    
     var body: some View {
-        NavigationView{
-            List{
-                if viewModel.isLoading {
-                    Text("Loading...").foregroundColor(.gray)  // Show loading state
-                } else {
-                    ForEach(Array(viewModel.sumOfMonths).sorted(by: { $0.key > $1.key }), id: \.key) { key, value in
-                        NavigationLink {
-                            ExpenseListView(viewModel: viewModel, month: key ?? yearMonthString(from: Date())) //! giả định rằng nó không phải nil.
-                        } label: {
-                            Text(key)
-                            Spacer()
-                            Text("\(value, specifier: "%.0f")")
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 8) {
+                    ForEach(Array(viewModel.sumOfYears).sorted(by: { $0.key > $1.key }), id: \.key) { year, value in
+                        DisclosureGroup(
+                            isExpanded: Binding<Bool>(
+                                get: { expandedYears.contains(year) },
+                                set: { newValue in
+                                    if newValue {
+                                        expandedYears.insert(year)
+                                    } else {
+                                        expandedYears.remove(year)
+                                    }
+                                })
+                        ){
+                            monthListContent(for: year)
+                        } label:{
+                            Text("Năm: \(year) 👉 \(value, specifier: "%.0f") VNĐ")
                                 .font(.headline)
-                                .foregroundColor(Color.green)
+                            
                         }
+                        .disclosureGroupStyle()  // Sử dụng style tùy chỉnh
+                        .foregroundColor(.black)
                     }
-                    .onDelete(perform: deleteItems)
+                    .animation(.easeInOut, value: expandedYears)
                 }
-            }.toolbar{
-                ToolbarItem{
+            }
+            .navigationTitle("THỐNG KÊ NĂM")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         showingAddExpense.toggle()
-                    }){
-                        Label("Thêm tháng", systemImage: "plus")
+                    }) {
+                        Image(systemName: "plus")
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(.white)
+                            .frame(width: 30, height: 30)
+                            .background(Color.green)
+                            .clipShape(Circle())
                     }
                 }
             }
-            .sheet(isPresented: $showingAddExpense) {
-                AddExpenseView(expenseFocused: .constant(nil as Expense?))
+            .sheet(isPresented: $showingAddExpense, onDismiss: {
+                viewModel.updateGroupedDictionary(for: nil)
+            }) {
+                AddExpenseView(expenseFocused: .constant(nil))
                     .environmentObject(viewModel)
             }
-        }.onAppear(){
-            viewModel.updateGroupedDictionary(for: (nil as String?))
+        }
+        .onAppear {
+            viewModel.updateGroupedDictionary(for: nil)
         }
     }
     
+    private func monthListContent(for year: String) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if viewModel.isLoading {
+                Text("Loading...")
+                    .foregroundColor(.gray)
+            } else {
+                // Filter and sort the dictionary into an array
+                let filteredItems = Array(viewModel.sumOfMonths)
+                    .filter { $0.key.hasSuffix(year) }
+                    .sorted { $0.key > $1.key }
+                
+                ForEach(Array(filteredItems.enumerated()), id: \.element.key) { index, item in
+                    VStack(spacing: 0) {
+                        NavigationLink {
+                            ExpenseListView(viewModel: viewModel, month: item.key)
+                        } label: {
+                            HStack {
+                                Text(item.key)
+                                Spacer()
+                                Text("\(item.value, specifier: "%.0f") VNĐ")
+                                    .font(.headline)
+                                    .foregroundColor(.green)
+                            }
+                            .padding(.vertical, 8)
+                        }
+                        
+                        // Add a divider if not the last item
+                        if index < filteredItems.count - 1 {
+                            Divider()
+                        }
+                    }
+                }
+                .onDelete { offsets in
+                    withAnimation {
+                        // Map the deleted indices to keys and remove them from the dictionary
+                        offsets.map { filteredItems[$0].key }
+                            .forEach { key in
+                                viewModel.sumOfMonths.removeValue(forKey: key)
+                            }
+                    }
+                }
+            }
+        }
+        .padding(.leading)
+    }
+    
+    /// Hàm xử lý xóa Item từ Core Data
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             offsets.map { items[$0] }.forEach(viewContext.delete)
-
+            
             do {
                 try viewContext.save()
             } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nsError = error as NSError
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
             }
         }
+    }
+}
+
+/// Extension view dùng để áp dụng style chung cho DisclosureGroup
+extension View {
+    func disclosureGroupStyle() -> some View {
+        self
+            .padding()
+            .background(Color(UIColor.secondarySystemBackground))
+            .cornerRadius(8)
+            .padding(.horizontal)
     }
 }
 
@@ -81,5 +160,6 @@ private let itemFormatter: DateFormatter = {
 
 struct MonthListView_Previews: PreviewProvider {
     static var previews: some View {
-        MonthListView()    }
+        MonthListView()
+    }
 }
