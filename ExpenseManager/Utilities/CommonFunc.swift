@@ -19,3 +19,10 @@ func dateFromString(_ string: String) -> Date? {
     formatter.locale = Locale(identifier: "en_US_POSIX") // ensures consistent parsing
     return formatter.date(from: string)
 }
+
+let itemFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .medium
+    return formatter
+}()
+

@@ -21,19 +21,19 @@ struct ExpenseListView: View {
             NavigationView {
                 List {
                     ForEach(Array(viewModel.groupedDictionary.keys).sorted(by: >), id: \.self) { date in
-                        Section(header: Text("\(date, formatter: itemFormatter)").font(.caption)) {
+                        let day = Calendar.current.component(.day, from: date)
+                        Section(header: Text("Ngày: \(day)").font(.caption)) {
                             ForEach(viewModel.groupedDictionary[date] ?? [], id: \.id) { expense in
-                                VStack(alignment: .leading) {
+                                HStack(){
                                     Text("🚀\(expense.descriptions ?? "No description")")
+                                    Spacer()
                                     Text("\(expense.amount, specifier: "%.0f VNĐ")")
                                         .font(.subheadline)
                                         .foregroundColor(.gray)
-                                }
-                                .onTapGesture {
+                                }.onTapGesture {
                                     expenseFocused = expense
                                     showingAddExpense = true
-                                }
-                                .padding(.vertical, 5)
+                                }.padding(.vertical, 5)
                             }
                             .onDelete { indexSet in
                                 guard let expenses = viewModel.groupedDictionary[date],
@@ -44,16 +44,20 @@ struct ExpenseListView: View {
                                 showDeleteConfirmation = true
                             }
                             
-                            Text("Tổng: \((viewModel.groupedDictionary[date] ?? []).reduce(0) { $0 + $1.amount }, specifier: "%.0f VNĐ")")
-                                .foregroundColor(.green)
-                                .padding(.top)
+                            HStack(){
+                                Text("Tổng: ")
+                                Spacer()
+                                Text("\((viewModel.groupedDictionary[date] ?? []).reduce(0) { $0 + $1.amount }, specifier: "%.0f VNĐ")")
+                                    .foregroundColor(.green)
+                                    .padding(.top)
+                            }
                         }
                     }
                 }
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .principal) {
-                        Text("Chi tiêu tháng \(month)")
+                        Text("Tháng \(month)")
                             .font(.system(size: 28, weight: .bold, design: .rounded))
                             .foregroundStyle(
                                 LinearGradient(gradient: Gradient(colors: [.blue, .purple]), startPoint: .leading, endPoint: .trailing)
@@ -114,13 +118,6 @@ struct ExpenseListView: View {
         }
     }
 }
-
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .medium
-    return formatter
-}()
-
 
 struct ExpenseListView_Previews: PreviewProvider {
     static var previews: some View {

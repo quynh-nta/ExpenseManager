@@ -44,10 +44,23 @@ struct MonthListView: View {
                         } label:{
                             Text("Năm: \(year) 👉 \(value, specifier: "%.0f") VNĐ")
                                 .font(.headline)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(.white)
+                                            .padding(.horizontal,16)
+                                            .padding(.vertical, 4)
+                                            .background(
+                                                LinearGradient(
+                                                    gradient: Gradient(colors: [.purple, .blue]),
+                                                    startPoint: .leading,
+                                                    endPoint: .trailing
+                                                )
+                                            )
+                                            .cornerRadius(10)
+                                            .shadow(color: Color.black.opacity(0.1), radius: 3, x: 0, y: 3)
                             
                         }
                         .disclosureGroupStyle()  // Sử dụng style tùy chỉnh
-                        .foregroundColor(.black)
+                        .foregroundColor(.primary)
                     }
                     .animation(.easeInOut, value: expandedYears)
                 }
@@ -150,13 +163,6 @@ extension View {
             .padding(.horizontal)
     }
 }
-
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
 
 struct MonthListView_Previews: PreviewProvider {
     static var previews: some View {
